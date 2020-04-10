@@ -13,9 +13,9 @@ My-Flix is a WIP (work in progress) personal media server to view your media lib
 My-Flix uses a number of open source projects to work properly:
 
 * [ReactJS](https://reactjs.org/)
-* [Twitter Bootstrap] - great UI boilerplate for modern web apps
-* [node.js]
-* [Express]
+* [Twitter Bootstrap](http://twitter.github.com/bootstrap/) - great UI boilerplate for modern web apps
+* [node.js](http://nodejs.org)
+* [Express](http://expressjs.com)
 * [Bulletproof node.js](https://github.com/santiq/bulletproof-nodejs)
 
 And of course My-Flix itself is open source with a [public repository](https://github.com/krystianBooker/Media-Server#readme)
@@ -37,5 +37,4 @@ $ npm run start
 
 License
 ----
-
 MIT
