@@ -14,8 +14,6 @@ export default ({ mongoConnection, models }: { mongoConnection; models: { name: 
 
         Container.set('agendaInstance', agendaInstance);
         Container.set('logger', LoggerInstance);
-        Container.set('emailClient', mailgun({ apiKey: config.emails.apiKey, domain: config.emails.domain }));
-
         LoggerInstance.info('Agenda injected into container');
 
         return { agenda: agendaInstance };

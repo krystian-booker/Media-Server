@@ -43,8 +43,6 @@ export default class UserSubscriber {
             // MailService.startSequence('user.welcome', { email, name })
         } catch (e) {
             Logger.error(`Error on event ${events.user.signUp}: %o`, e);
-
-            // Throw the error so the process dies (check src/app.ts)
             throw e;
         }
     }

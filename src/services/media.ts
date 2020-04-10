@@ -1,9 +1,6 @@
 import { Service, Inject } from 'typedi';
-import jwt from 'jsonwebtoken';
-import config from '../config';
 import { IMediaLocations, IMediaLocationsDTO } from '../interfaces/IMediaLocations';
 import { EventDispatcher, EventDispatcherInterface } from '../decorators/eventDispatcher';
-import events from '../subscribers/events';
 
 @Service()
 export default class MediaService {

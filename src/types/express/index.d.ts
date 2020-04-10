@@ -5,7 +5,6 @@ import { IMediaLocations } from '../../interfaces/IMediaLocations';
 declare global {
     namespace Express {
 
-        //I don't think these are needed
         export interface Request {
             currentUser: IUser & Document;
             currentMediaLocation: IMediaLocations & Document;
