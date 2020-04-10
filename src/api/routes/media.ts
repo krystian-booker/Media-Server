@@ -1,50 +1,36 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { Container } from 'typedi';
 import middlewares from '../middlewares';
-import MediaService from '../../services/media';
 import { celebrate, Joi } from 'celebrate';
 import Logger from '../../loaders/logger';
-import { IMediaLocationsDTO } from '../../interfaces/IMediaLocations';
+// import MediaService from '../../services/media';
+import { IMediaDTO } from '../../interfaces/IMedia';
 const route = Router();
 
 export default (app: Router) => {
     app.use('/media', route);
 
     route.post(
-        '/mediaLocation',
+        '/content',
         middlewares.isAuth,
         celebrate({
             body: Joi.object({
-                name: Joi.string().required(),
+                filename: Joi.string().required(),
                 location: Joi.string().required(),
+                mediaLocationName: Joi.string().required(),
             }),
         }),
         async (req: Request, res: Response, next: NextFunction) => {
-            Logger.debug('Calling Media-Location creation endpoint with body: %o', req.body);
+            Logger.debug('Calling media creation endpoint with body: %o', req.body);
             try {
-                const mediaServiceInstance = Container.get(MediaService);
-                const { mediaLocation } = await mediaServiceInstance.createMediaLocation(
-                    req.body as IMediaLocationsDTO,
-                );
+                const mediaLogic = new middlewares.mediaLogic();
+                const media = await mediaLogic.createMedia(req.body as IMediaDTO);
 
-                return res.status(201).json({ mediaLocation });
+                return res.status(201).json({ media });
             } catch (e) {
                 Logger.error('error: %o', e);
                 return next(e);
             }
         },
     );
-
-    route.get('/mediaLocation', middlewares.isAuth, async (req: Request, res: Response, next: NextFunction) => {
-        Logger.debug('Calling Media-Location get endpoint with body: %o', req.body);
-        try {
-            const mediaServiceInstance = Container.get(MediaService);
-            const { mediaLocations } = await mediaServiceInstance.getMediaLocations();
-
-            return res.json({ mediaLocations: mediaLocations }).status(200);
-        } catch (e) {
-            Logger.error('error: %o', e);
-            return next(e);
-        }
-    });
 };

@@ -1,10 +1,10 @@
-export interface IMediaLocations {
+export interface IMediaLocation {
     _id: string;
     name: string;
     location: string;
 }
 
-export interface IMediaLocationsDTO {
+export interface IMediaLocationDTO {
     name: string;
     location: string;
 }

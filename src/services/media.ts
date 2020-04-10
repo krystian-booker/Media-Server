@@ -1,50 +1,27 @@
 import { Service, Inject } from 'typedi';
-import { IMediaLocations, IMediaLocationsDTO } from '../interfaces/IMediaLocations';
-import { EventDispatcher, EventDispatcherInterface } from '../decorators/eventDispatcher';
+import { Container } from 'typedi';
+import MediaLocationService from './mediaLocation';
+import { IMedia, IMediaDTO } from '../interfaces/IMedia';
+import { Document } from 'mongoose';
 
 @Service()
 export default class MediaService {
-    constructor(
-        @Inject('mediaLocationsModel') private mediaLocationModel: Models.MediaLocation,
-        @Inject('logger') private logger,
-        @EventDispatcher() private eventDispatcher: EventDispatcherInterface,
-    ) {}
+    constructor(@Inject('mediaModel') private mediaModel: Models.MediaModel, @Inject('logger') private logger) {}
 
-    public async createMediaLocation(
-        mediaLocationInputDTO: IMediaLocationsDTO,
-    ): Promise<{ mediaLocation: IMediaLocations }> {
+    public async createMedia(mediaDTO: IMediaDTO): Promise<{ mediaRecord: IMedia & Document }> {
         try {
-            this.logger.silly('Creating media location db record');
-            const mediaLocationRecord = await this.mediaLocationModel.create({
-                ...mediaLocationInputDTO,
+            const mediaRecord = await this.mediaModel.create({
+                ...mediaDTO,
             });
 
-            if (!mediaLocationRecord) {
-                throw new Error('Media location cannot be created');
+            if (!mediaRecord) {
+                throw new Error('Media cannot be created');
             }
 
-            const mediaLocation = mediaLocationRecord.toObject();
-            return { mediaLocation };
+            return { mediaRecord };
         } catch (e) {
             this.logger.error(e);
             throw e;
         }
-    }
-
-    public async getMediaLocations(): Promise<{ mediaLocations: IMediaLocations[] }> {
-        const mediaLocationCursor = await this.mediaLocationModel.find().cursor();
-        if (!mediaLocationCursor) {
-            throw new Error('Media locations not found');
-        }
-
-        var mediaLocations: IMediaLocations[] = [];
-        for (
-            let mediaLocation = await mediaLocationCursor.next();
-            mediaLocation != null;
-            mediaLocation = await mediaLocationCursor.next()
-        ) {
-            mediaLocations.push(mediaLocation.toObject());
-        }
-        return { mediaLocations };
     }
 }
