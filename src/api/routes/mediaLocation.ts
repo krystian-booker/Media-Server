@@ -12,34 +12,32 @@ export default (app: Router) => {
 
     route.post(
         '/mediaLocation',
-        middlewares.isAuth,
+        middlewares.isUserAuthorized,
         celebrate({
             body: Joi.object({
                 name: Joi.string().required(),
-                location: Joi.string().required(),
-            }),
+                location: Joi.string().required()
+            })
         }),
         async (req: Request, res: Response, next: NextFunction) => {
             Logger.debug('Calling Media-Location creation endpoint with body: %o', req.body);
             try {
-                const mediaLocationServiceInstance = Container.get(MediaLocationService);
-                const { mediaLocation } = await mediaLocationServiceInstance.createMediaLocation(
-                    req.body as IMediaLocationDTO,
-                );
+                const mediaLocationLogic = new middlewares.mediaLocationLogic();
+                const mediaLocation = await mediaLocationLogic.createMediaLocation(req.body as IMediaLocationDTO);
 
                 return res.status(201).json({ mediaLocation });
             } catch (e) {
                 Logger.error('error: %o', e);
                 return next(e);
             }
-        },
+        }
     );
 
-    route.get('/mediaLocation', middlewares.isAuth, async (req: Request, res: Response, next: NextFunction) => {
+    route.get('/mediaLocation', middlewares.isUserAuthorized, async (req: Request, res: Response, next: NextFunction) => {
         Logger.debug('Calling Media-Location get endpoint with body: %o', req.body);
         try {
-            const mediaLocationServiceInstance = Container.get(MediaLocationService);
-            const { mediaLocations } = await mediaLocationServiceInstance.getMediaLocations();
+            const mediaLocationLogic = new middlewares.mediaLocationLogic();
+            const mediaLocations = await mediaLocationLogic.getAllMediaLocations();
 
             return res.json({ mediaLocations: mediaLocations }).status(200);
         } catch (e) {

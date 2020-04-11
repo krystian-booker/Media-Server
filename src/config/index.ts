@@ -33,12 +33,4 @@ export default {
         pooltime: process.env.AGENDA_POOL_TIME,
         concurrency: parseInt(process.env.AGENDA_CONCURRENCY, 10),
     },
-
-    /**
-     * Agendash config
-     */
-    agendash: {
-        user: 'agendash',
-        password: '123456',
-    }
 };

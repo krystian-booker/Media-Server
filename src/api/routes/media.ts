@@ -1,9 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { Container } from 'typedi';
 import middlewares from '../middlewares';
 import { celebrate, Joi } from 'celebrate';
 import Logger from '../../loaders/logger';
-// import MediaService from '../../services/media';
 import { IMediaDTO } from '../../interfaces/IMedia';
 const route = Router();
 
@@ -12,13 +10,13 @@ export default (app: Router) => {
 
     route.post(
         '/content',
-        middlewares.isAuth,
+        middlewares.isUserAuthorized,
         celebrate({
             body: Joi.object({
                 filename: Joi.string().required(),
                 location: Joi.string().required(),
-                mediaLocationName: Joi.string().required(),
-            }),
+                mediaLocationName: Joi.string().required()
+            })
         }),
         async (req: Request, res: Response, next: NextFunction) => {
             Logger.debug('Calling media creation endpoint with body: %o', req.body);
@@ -31,6 +29,6 @@ export default (app: Router) => {
                 Logger.error('error: %o', e);
                 return next(e);
             }
-        },
+        }
     );
 };

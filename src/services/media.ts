@@ -11,7 +11,7 @@ export default class MediaService {
     public async createMedia(mediaDTO: IMediaDTO): Promise<{ mediaRecord: IMedia & Document }> {
         try {
             const mediaRecord = await this.mediaModel.create({
-                ...mediaDTO,
+                ...mediaDTO
             });
 
             if (!mediaRecord) {

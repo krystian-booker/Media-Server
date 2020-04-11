@@ -9,11 +9,7 @@ import events from '../subscribers/events';
 
 @Service()
 export default class AuthService {
-    constructor(
-        @Inject('userModel') private userModel: Models.UserModel,
-        @Inject('logger') private logger,
-        @EventDispatcher() private eventDispatcher: EventDispatcherInterface,
-    ) {}
+    constructor(@Inject('userModel') private userModel: Models.UserModel, @Inject('logger') private logger, @EventDispatcher() private eventDispatcher: EventDispatcherInterface) {}
 
     public async SignUp(userInputDTO: IUserInputDTO): Promise<{ user: IUser; token: string }> {
         try {
@@ -25,7 +21,7 @@ export default class AuthService {
             const userRecord = await this.userModel.create({
                 ...userInputDTO,
                 salt: salt.toString('hex'),
-                password: hashedPassword,
+                password: hashedPassword
             });
             this.logger.silly('Generating JWT');
             const token = this.generateToken(userRecord);
@@ -78,12 +74,12 @@ export default class AuthService {
         this.logger.silly(`Sign JWT for userId: ${user._id}`);
         return jwt.sign(
             {
-                _id: user._id, // We are gonna use this in the middleware 'isAuth'
+                _id: user._id,
                 role: user.role,
                 name: user.name,
-                exp: exp.getTime() / 1000,
+                exp: exp.getTime() / 1000
             },
-            config.jwtSecret,
+            config.jwtSecret
         );
     }
 }

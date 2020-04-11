@@ -1,9 +1,13 @@
 import attachCurrentUser from './attachCurrentUser';
 import mediaLogic from './mediaLogic';
-import isAuth from './isAuth';
+import mediaLocationLogic from './mediaLocationLogic';
+import authLogic from './authLogic';
+import isUserAuthorized from './isUserAuthorized';
 
 export default {
     attachCurrentUser,
-    isAuth,
+    isUserAuthorized,
     mediaLogic,
+    mediaLocationLogic,
+    authLogic
 };
