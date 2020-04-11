@@ -3,8 +3,8 @@ import { IUserInputDTO } from '../../interfaces/IUser';
 import middlewares from '../middlewares';
 import { celebrate, Joi } from 'celebrate';
 import Logger from '../../loaders/logger';
-
 const route = Router();
+const authLogic = new middlewares.authLogic();
 
 export default (app: Router) => {
     app.use('/auth', route);
@@ -21,7 +21,6 @@ export default (app: Router) => {
         async (req: Request, res: Response, next: NextFunction) => {
             Logger.debug('Calling Sign-Up endpoint with body: %o', req.body);
             try {
-                const authLogic = new middlewares.authLogic();
                 const { user, token } = await authLogic.userSignUp(req.body as IUserInputDTO);
                 return res.json({ user, token }).status(201);
             } catch (e) {
@@ -43,7 +42,6 @@ export default (app: Router) => {
             Logger.debug('Calling Sign-In endpoint with body: %o', req.body);
             try {
                 const { email, password } = req.body;
-                const authLogic = new middlewares.authLogic();
                 const { user, token } = await authLogic.userSignIn(email, password);
                 return res.json({ user, token }).status(200);
             } catch (e) {
