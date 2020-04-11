@@ -6,7 +6,7 @@ const MediaLocation = new mongoose.Schema(
         name: {
             type: String,
             required: [true, 'Please enter a name'],
-            unique: true,
+            unique: false,
             index: true
         },
 
