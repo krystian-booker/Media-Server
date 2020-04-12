@@ -2,27 +2,26 @@ import { Router, Request, Response, NextFunction } from 'express';
 import middlewares from '../middlewares';
 import { celebrate, Joi } from 'celebrate';
 import Logger from '../../loaders/logger';
-import { IMediaLocationDTO } from '../../interfaces/IMediaLocation';
+import { IMovieLocationDTO } from '../../interfaces/IMovieLocation';
 const route = Router();
-const mediaLocationLogic = new middlewares.mediaLocationLogic();
+const movieLocationLogic = new middlewares.movieLocationLogic();
 
 export default (app: Router) => {
     app.use('/media', route);
 
     route.post(
-        '/mediaLocation',
+        '/movieLocation',
         middlewares.isUserAuthorized,
         celebrate({
             body: Joi.object({
-                name: Joi.string().required(),
-                location: Joi.string().required()
+                location: Joi.string().required(),
             })
         }),
         async (req: Request, res: Response, next: NextFunction) => {
-            Logger.debug('Calling Media-Location creation endpoint with body: %o', req.body);
+            Logger.debug('Calling Movie-Location creation endpoint with body: %o', req.body);
             try {
-                const mediaLocation = await mediaLocationLogic.createMediaLocation(req.body as IMediaLocationDTO);
-                return res.status(201).json({ mediaLocation });
+                const movieLocation = await movieLocationLogic.createMovieLocation(req.body as IMovieLocationDTO);
+                return res.status(201).json({ movieLocation });
             } catch (e) {
                 Logger.error('error: %o', e);
                 return next(e);
@@ -30,11 +29,11 @@ export default (app: Router) => {
         }
     );
 
-    route.get('/mediaLocation', middlewares.isUserAuthorized, async (req: Request, res: Response, next: NextFunction) => {
-        Logger.debug('Calling Media-Location get endpoint with body: %o', req.body);
+    route.get('/movieLocation', middlewares.isUserAuthorized, async (req: Request, res: Response, next: NextFunction) => {
+        Logger.debug('Calling Movie-Location get endpoint with body: %o', req.body);
         try {
-            const mediaLocations = await mediaLocationLogic.getAllMediaLocations();
-            return res.json({ mediaLocations: mediaLocations }).status(200);
+            const movieLocations = await movieLocationLogic.getAllMovieLocations();
+            return res.json({ movieLocations: movieLocations }).status(200);
         } catch (e) {
             Logger.error('error: %o', e);
             return next(e);

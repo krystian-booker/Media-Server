@@ -1,21 +1,21 @@
 import { Document, Model } from 'mongoose';
 import { IUser } from '../../interfaces/IUser';
-import { IMediaLocation } from '../../interfaces/IMediaLocation';
-import { IMedia } from '../../interfaces/IMedia';
+import { IMovieLocation } from '../../interfaces/IMovieLocation';
+import { IMovie } from '../../interfaces/IMovie';
 
 declare global {
     namespace Express {
 
         export interface Request {
             currentUser: IUser & Document;
-            currentMediaLocation: IMediaLocation & Document;
-            currentMedia: IMedia & Document;
+            currentmovieLocation: IMovieLocation & Document;
+            currentMovies: IMovie & Document;
         }
     }
 
     namespace Models {
         export type UserModel = Model<IUser & Document>;
-        export type MediaLocationModel = Model<IMediaLocation & Document>;
-        export type MediaModel = Model<IMedia & Document>;
+        export type movieLocationModel = Model<IMovieLocation & Document>;
+        export type MovieModel = Model<IMovie & Document>;
     }
 }

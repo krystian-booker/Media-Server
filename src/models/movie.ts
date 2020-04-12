@@ -1,28 +1,34 @@
 import { IUser } from '../interfaces/IUser';
 import mongoose from 'mongoose';
 
-const Media = new mongoose.Schema(
+const Movie = new mongoose.Schema(
     {
-        filename: {
+        name: {
             type: String,
             required: [true, 'Please enter a name'],
             unique: false,
             index: true,
         },
-        location: {
+        folder: {
             type: String,
             required: [true, 'Please enter a file path'],
             unique: false,
             index: true,
         },
-        mediaLocationName: {
+        file: {
             type: String,
-            required: [true, 'Media needs to be attached to a media location'],
+            required: [true, 'Please enter a file path'],
             unique: false,
             index: true,
         },
+        movieLocationId: {
+            type: String,
+            required: [true, 'Movie must be attached to a location'],
+            unique: false,
+            index: false
+        }
     },
-    { timestamps: true },
+    { timestamps: true }
 );
 
-export default mongoose.model<IUser & mongoose.Document>('Media', Media);
+export default mongoose.model<IUser & mongoose.Document>('Movie', Movie);

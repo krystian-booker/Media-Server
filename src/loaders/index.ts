@@ -15,22 +15,19 @@ export default async ({ expressApp }) => {
         model: require('../models/user').default,
     };
 
-    const mediaLocationModel = {
-        name: 'mediaLocationModel',
-        model: require('../models/mediaLocation').default
-    }
+    const movieLocationModel = {
+        name: 'movieLocationModel',
+        model: require('../models/movieLocation').default,
+    };
 
-    const mediaModel = {
-        name: 'mediaModel',
-        model: require('../models/media').default
-    }
+    const movieModel = {
+        name: 'movieModel',
+        model: require('../models/movie').default,
+    };
 
     const { agenda } = await dependencyInjectorLoader({
         mongoConnection,
-        models: [
-            userModel,
-            mediaLocationModel,
-            mediaModel],
+        models: [userModel, movieLocationModel, movieModel],
     });
     Logger.info('Dependency Injector loaded');
 
