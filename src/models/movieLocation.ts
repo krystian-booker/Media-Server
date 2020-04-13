@@ -1,4 +1,4 @@
-import { IUser } from '../interfaces/IUser';
+import { IMovieLocation } from '../interfaces/IMovieLocation';
 import mongoose from 'mongoose';
 
 const MovieLocation = new mongoose.Schema(
@@ -12,4 +12,4 @@ const MovieLocation = new mongoose.Schema(
     { timestamps: true },
 );
 
-export default mongoose.model<IUser & mongoose.Document>('MovieLocation', MovieLocation);
+export default mongoose.model<IMovieLocation & mongoose.Document>('MovieLocation', MovieLocation);

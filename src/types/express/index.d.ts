@@ -9,7 +9,7 @@ declare global {
         export interface Request {
             currentUser: IUser & Document;
             currentmovieLocation: IMovieLocation & Document;
-            currentMovies: IMovie & Document;
+            currentMovie: IMovie & Document;
         }
     }
 

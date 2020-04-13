@@ -31,6 +31,7 @@
   "author": "Krystian Booker",
   "license": "ISC",
   "dependencies": {
+    "@ctrl/video-filename-parser": "^1.6.5",
     "agenda": "^3.1.0",
     "argon2": "^0.26.2",
     "body-parser": "^1.19.0",

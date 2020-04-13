@@ -1,4 +1,4 @@
-import { IUser } from '../interfaces/IUser';
+import { IMovie } from '../interfaces/IMovie';
 import mongoose from 'mongoose';
 
 const Movie = new mongoose.Schema(
@@ -25,10 +25,16 @@ const Movie = new mongoose.Schema(
             type: String,
             required: [true, 'Movie must be attached to a location'],
             unique: false,
-            index: false
-        }
+            index: false,
+        },
+        year: {
+            type: String,
+            required: false,
+            unique: false,
+            index: false,
+        },
     },
     { timestamps: true }
 );
 
-export default mongoose.model<IUser & mongoose.Document>('Movie', Movie);
+export default mongoose.model<IMovie & mongoose.Document>('Movie', Movie);

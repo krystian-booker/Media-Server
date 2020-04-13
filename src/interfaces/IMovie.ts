@@ -3,6 +3,7 @@ export interface IMovie {
     name: string;
     folder: string;
     movieLocationId: string;
+    year: string;
 }
 
 export interface IMovieDTO {
@@ -10,4 +11,5 @@ export interface IMovieDTO {
     folder: string;
     file: string;
     movieLocationId: string;
+    year: string;
 }
