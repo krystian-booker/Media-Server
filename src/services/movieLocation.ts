@@ -32,10 +32,10 @@ export default class MovieLocationService {
         return { movieLocationRecords };
     }
 
-    public async getMediaByName(name: string): Promise<{ movieLocationRecord: IMovieLocation & Document }> {
-        const movieLocationRecord = await this.movieLocationModel.findOne({ name });
+    public async getMovieLocationByLocation(location: string): Promise<{ movieLocationRecord: IMovieLocation & Document }> {
+        const movieLocationRecord = await this.movieLocationModel.findOne({ location });
         if (!movieLocationRecord) {
-            throw new Error('Movie locations not found');
+            throw new Error('Movie location not found');
         }
         return { movieLocationRecord };
     }

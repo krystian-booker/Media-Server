@@ -5,7 +5,7 @@ import { IMovie, IMovieDTO } from '../../interfaces/IMovie';
 export default class MovieLogic {
     public async createMovie(movieDTO: IMovieDTO): Promise<{ movie: IMovie }> {
         const movieServiceInstance = Container.get(MovieService);
-        const { movieRecord } = await movieServiceInstance.createMedia(movieDTO);
+        const { movieRecord } = await movieServiceInstance.createMovie(movieDTO);
 
         var movie = movieRecord.toObject();
         return movie;
