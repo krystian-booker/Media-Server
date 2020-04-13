@@ -15,7 +15,7 @@ declare global {
 
     namespace Models {
         export type UserModel = Model<IUser & Document>;
-        export type movieLocationModel = Model<IMovieLocation & Document>;
+        export type MovieLocationModel = Model<IMovieLocation & Document>;
         export type MovieModel = Model<IMovie & Document>;
     }
 }
