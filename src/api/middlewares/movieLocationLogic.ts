@@ -3,7 +3,7 @@ import MovieLocationService from '../../services/movieLocation';
 import { IMovieLocation, IMovieLocationDTO } from '../../interfaces/IMovieLocation';
 
 export default class MovieLocationLogic {
-    public async createMovieLocation(movieLocationDTO: IMovieLocationDTO): Promise<{ mediaLocation: IMovieLocation }> {
+    public async createMovieLocation(movieLocationDTO: IMovieLocationDTO): Promise<{ movieLocation: IMovieLocation }> {
         const movieLocationServiceInstance = Container.get(MovieLocationService);
         const { movieLocationRecord } = await movieLocationServiceInstance.createMovieLocation(movieLocationDTO);
 

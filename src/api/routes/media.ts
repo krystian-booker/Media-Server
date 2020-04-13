@@ -8,7 +8,6 @@ const movieLogic = new middlewares.movieLogic();
 
 //REMOVE
 import { Container } from 'typedi';
-import MovieService from '../../services/movieScanner';
 import MovieScannerService from '../../services/movieScanner';
 import { IMovieLocationDTO } from '../../interfaces/IMovieLocation';
 

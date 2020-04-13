@@ -14,6 +14,8 @@ const movieLocationServiceInstance = Container.get(MovieLocationService);
 
 @Service()
 export default class MovieScannerService {
+    constructor(@Inject('movieModel') private movieModel: Models.MovieModel, @Inject('logger') private logger) { }
+    
     public async scan(mediaLocationInputDTO: IMovieLocationDTO): Promise<{ test: String }> {
         try {
             //Get movie location for document id
