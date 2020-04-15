@@ -40,37 +40,49 @@ export default class MovieScannerService {
     }
 
     private async createMovieWithoutDirectory(directory: fs.Dirent, mediaLocationInputDTO: IMovieLocationDTO, movieLocationRecord: IMovieLocation & Document) {
-        //Format location url
-        var movieFileLocation = `${mediaLocationInputDTO.location}\\${directory.name}`;
-
-        //Check if movie already exists
-        const movieServiceInstance = Container.get(MovieService);
-        var movie = await movieServiceInstance.getMovieByFile(movieFileLocation);
-        if (movie) {
-            Logger.silly('Movie record already exists');
+        var movieFileLocation = this.formatPath(mediaLocationInputDTO.location, directory.name);
+        if (await this.doesMovieRecordExist(movieFileLocation)) {
             return;
         }
 
-        //3rd part file name parser
-        var titleDetails: ParsedFilename = filenameParse(directory.name, false);
-        if (!titleDetails) {
-            Logger.error(`Error parsing file: ${directory.name}`);
-            return;
-        }
-
-        //Generate movie
+        var movieTitleDetails = this.parseMovieTitle(directory.name);
         var movieDTO: IMovieDTO = {
-            name: titleDetails.title ? titleDetails.title : 'undefined',
+            name: movieTitleDetails.title ? movieTitleDetails.title : 'undefined',
             folder: mediaLocationInputDTO.location ? mediaLocationInputDTO.location : 'undefined',
             file: movieFileLocation ? movieFileLocation : 'undefined',
             movieLocationId: movieLocationRecord.id,
-            year: titleDetails.year ? titleDetails.year : '0000',
+            year: movieTitleDetails.year ? movieTitleDetails.year : '0000',
         };
+
+        const movieServiceInstance = Container.get(MovieService);
         await movieServiceInstance.createMovie(movieDTO);
+    }
+
+    private parseMovieTitle(movieTitle: string): ParsedFilename {
+        var titleDetails: ParsedFilename = filenameParse(movieTitle, false);
+        if (!titleDetails) {
+            Logger.error(`Error parsing file: ${movieTitle}`);
+            return;
+        }
+        return titleDetails;
     }
 
     private async fileSystemScan(mediaLocationInputDTO: IMovieLocationDTO): Promise<{ directory: fs.Dirent[] }> {
         var directory: fs.Dirent[] = await fs.readdirSync(mediaLocationInputDTO.location, { withFileTypes: true });
         return { directory };
+    }
+
+    private formatPath(location: string, name: string): string {
+        //TODO: Linux/OSX support
+        return `${location}\\${name}`;
+    }
+
+    private async doesMovieRecordExist(movieFileLocation: string): Promise<boolean> {
+        const movieServiceInstance = Container.get(MovieService);
+        var movie = await movieServiceInstance.getMovieByFile(movieFileLocation);
+        if (movie) {
+            Logger.silly('Movie record already exists');
+        }
+        return movie != null;
     }
 }
