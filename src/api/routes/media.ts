@@ -6,11 +6,6 @@ import { IMovieDTO } from '../../interfaces/IMovie';
 const route = Router();
 const movieLogic = new middlewares.movieLogic();
 
-//REMOVE
-import { Container } from 'typedi';
-import MovieScannerService from '../../services/movieScanner';
-import { IMovieLocationDTO } from '../../interfaces/IMovieLocation';
-
 export default (app: Router) => {
     app.use('/media', route);
 
@@ -37,18 +32,4 @@ export default (app: Router) => {
             }
         }
     );
-
-    //REMOVE
-    route.get('/scan', async (req: Request, res: Response, next: NextFunction) => {
-        Logger.debug('Calling movie scanner');
-        try {
-            const movieScannerServiceInstance = Container.get(MovieScannerService);
-            const { test } = await movieScannerServiceInstance.scan(req.body as IMovieLocationDTO)
-
-            return res.status(201).json({ test });
-        } catch (e) {
-            Logger.error('error: %o', e);
-            return next(e);
-        }
-    });
 };
