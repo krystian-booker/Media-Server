@@ -26,8 +26,23 @@ export default class MovieService {
 
     public async getMovieByFile(fileName: string): Promise<{ movie: IMovie }> {
         try {
-            const movieRecord = await this.movieModel.findOne({ fileName });
+            const movieRecord = await this.movieModel.findOne({ file: fileName });
+            if (!movieRecord) {
+                Logger.silly('Movie record not found');
+                return null;
+            }
 
+            var movie = movieRecord.toObject();
+            return { movie };
+        } catch (e) {
+            this.logger.error(e);
+            throw e;
+        }
+    }
+
+    public async getMovieByFolder(folder: string): Promise<{ movie: IMovie }> {
+        try {
+            const movieRecord = await this.movieModel.findOne({ folder: folder });
             if (!movieRecord) {
                 Logger.silly('Movie record not found');
                 return null;
