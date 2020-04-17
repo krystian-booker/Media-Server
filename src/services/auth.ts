@@ -6,24 +6,25 @@ import { randomBytes } from 'crypto';
 import { IUser, IUserInputDTO } from '../interfaces/IUser';
 import { EventDispatcher, EventDispatcherInterface } from '../decorators/eventDispatcher';
 import events from '../subscribers/events';
+import Logger from '../loaders/logger';
 
 @Service()
 export default class AuthService {
-    constructor(@Inject('userModel') private userModel: Models.UserModel, @Inject('logger') private logger, @EventDispatcher() private eventDispatcher: EventDispatcherInterface) {}
+    constructor(@Inject('userModel') private userModel: Models.UserModel, @EventDispatcher() private eventDispatcher: EventDispatcherInterface) {}
 
     public async SignUp(userInputDTO: IUserInputDTO): Promise<{ user: IUser; token: string }> {
         try {
             const salt = randomBytes(32);
 
-            this.logger.silly('Hashing password');
+            Logger.silly('Hashing password');
             const hashedPassword = await argon2.hash(userInputDTO.password, { salt });
-            this.logger.silly('Creating user db record');
+            Logger.silly('Creating user db record');
             const userRecord = await this.userModel.create({
                 ...userInputDTO,
                 salt: salt.toString('hex'),
                 password: hashedPassword
             });
-            this.logger.silly('Generating JWT');
+            Logger.silly('Generating JWT');
             const token = this.generateToken(userRecord);
 
             if (!userRecord) {
@@ -36,7 +37,7 @@ export default class AuthService {
             Reflect.deleteProperty(user, 'salt');
             return { user, token };
         } catch (e) {
-            this.logger.error(e);
+            Logger.error(e);
             throw e;
         }
     }
@@ -50,11 +51,11 @@ export default class AuthService {
         /**
          * We use verify from argon2 to prevent 'timing based' attacks
          */
-        this.logger.silly('Checking password');
+        Logger.silly('Checking password');
         const validPassword = await argon2.verify(userRecord.password, password);
         if (validPassword) {
-            this.logger.silly('Password is valid!');
-            this.logger.silly('Generating JWT');
+            Logger.silly('Password is valid!');
+            Logger.silly('Generating JWT');
             const token = this.generateToken(userRecord);
 
             const user = userRecord.toObject();
@@ -71,7 +72,7 @@ export default class AuthService {
         const exp = new Date(today);
         exp.setDate(today.getDate() + 60);
 
-        this.logger.silly(`Sign JWT for userId: ${user._id}`);
+        Logger.silly(`Sign JWT for userId: ${user._id}`);
         return jwt.sign(
             {
                 _id: user._id,

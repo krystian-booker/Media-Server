@@ -5,7 +5,7 @@ import Logger from '../loaders/logger';
 
 @Service()
 export default class MovieService {
-    constructor(@Inject('movieModel') private movieModel: Models.MovieModel, @Inject('logger') private logger) {}
+    constructor(@Inject('movieModel') private movieModel: Models.MovieModel) {}
 
     public async createMovie(movieDTO: IMovieDTO): Promise<{ movieRecord: IMovie & Document }> {
         try {
@@ -19,7 +19,7 @@ export default class MovieService {
 
             return { movieRecord };
         } catch (e) {
-            this.logger.error(e);
+            Logger.error(e);
             throw e;
         }
     }
@@ -35,7 +35,7 @@ export default class MovieService {
             var movie = movieRecord.toObject();
             return { movie };
         } catch (e) {
-            this.logger.error(e);
+            Logger.error(e);
             throw e;
         }
     }
@@ -51,7 +51,7 @@ export default class MovieService {
             var movie = movieRecord.toObject();
             return { movie };
         } catch (e) {
-            this.logger.error(e);
+            Logger.error(e);
             throw e;
         }
     }

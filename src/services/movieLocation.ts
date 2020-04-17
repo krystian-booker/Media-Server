@@ -1,10 +1,11 @@
 import { Service, Inject } from 'typedi';
 import { IMovieLocation, IMovieLocationDTO } from '../interfaces/IMovieLocation';
 import { Document } from 'mongoose';
+import Logger from '../loaders/logger';
 
 @Service()
 export default class MovieLocationService {
-    constructor(@Inject('movieLocationModel') private movieLocationModel: Models.MovieLocationModel, @Inject('logger') private logger) {}
+    constructor(@Inject('movieLocationModel') private movieLocationModel: Models.MovieLocationModel) {}
 
     public async createMovieLocation(mediaLocationInputDTO: IMovieLocationDTO): Promise<{ movieLocationRecord: IMovieLocation & Document }> {
         try {
@@ -18,7 +19,7 @@ export default class MovieLocationService {
 
             return { movieLocationRecord };
         } catch (e) {
-            this.logger.error(e);
+            Logger.error(e);
             throw e;
         }
     }
