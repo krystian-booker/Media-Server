@@ -1,6 +1,6 @@
 # My-Flix
 
-My-Flix is a WIP (work in progress) personal media server to view your media libraries on every device. 
+My-Flix was a personal media server to view your media libraries on every device. 
 
 ### Features!
 
@@ -31,9 +31,6 @@ Install the dependencies and devDependencies and start the server.
 $ npm install
 $ npm run start
 ```
-
-### Todos
- - [Trello](https://trello.com/b/swTfOikV/my-flix)
 
 License
 ----
